@@ -1,0 +1,723 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>StudyOn — говорим по-английски</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Rubik+Mono+One&family=Nunito:wght@400;600;700;800;900&display=swap">
+<style>
+/* ===== Вариант 3 «Говорим!» — яркий, для школьников, студентов и родителей.
+   Жёлтый StudyOn + чёрные толстые рамки, жёсткие тени и наклеенные стикеры (розовый, голубой).
+   Фишки: карточка «Скажи по-английски» (переворачивается), бегущая строка, живая шкала «Сейчас в StudyOn»
+   по времени Бишкека, обратный отсчёт до набора, учителя-перевёртыши, тест на 10 вопросов. ===== */
+:root{
+  --y:#FFE000;--k:#000;--pink:#FF8AC4;--sky:#8FD8FF;--mint:#9BF0B9;--paper:#FFFBE3;--muted:#4A4636;
+  --h:"Rubik Mono One",system-ui,sans-serif;--b:"Nunito",system-ui,"Segoe UI",sans-serif;
+  --mb-bg:#FFE000;--mb-fg:#000;--ph-bg:#fff;--ph-fg:#D8D2AE;
+  --bd:3px solid #000;--sh:6px 6px 0 #000;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:86px}
+body{margin:0;background:var(--paper);color:#000;font:600 17px/1.55 var(--b);-webkit-font-smoothing:antialiased}
+a{color:inherit}
+svg{display:block}
+.wrap{width:min(1180px,100% - 48px);margin-inline:auto}
+:focus-visible{outline:3px dashed #000;outline-offset:4px}
+h1,h2,h3{margin:0;font-weight:400;line-height:1.08}
+h1,h2{font-family:var(--h);letter-spacing:-.01em}
+h2{font-size:clamp(26px,3vw,40px)}
+h3{font:900 22px/1.2 var(--b)}
+p{margin:0}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;border:var(--bd);border-radius:16px;padding:14px 22px;font:900 16px/1 var(--b);text-decoration:none;cursor:pointer;white-space:nowrap;box-shadow:4px 4px 0 #000;transition:transform .12s,box-shadow .12s;color:#000;background:#fff}
+.btn:hover{transform:translate(-2px,-2px);box-shadow:6px 6px 0 #000}
+.btn:active{transform:translate(3px,3px);box-shadow:1px 1px 0 #000}
+.btn svg{width:20px;height:20px}
+.btn-k{background:#000;color:var(--y)}
+.btn-y{background:var(--y)}
+.btn-wa{background:#25D366;color:#fff}
+.btn-gis{background:#2FB540;color:#fff}
+
+/* заголовок раздела: цветной стикер со значком, наклонён */
+.sec{padding:108px 0}
+.sh{display:flex;gap:22px;align-items:center;margin-bottom:52px;flex-wrap:wrap}
+.stk{flex:0 0 auto;width:70px;height:70px;border:var(--bd);border-radius:20px;display:grid;place-items:center;box-shadow:4px 4px 0 #000;transform:rotate(-6deg);background:var(--y)}
+.stk svg{width:32px;height:32px}
+.stk.pink{background:var(--pink)}.stk.sky{background:var(--sky)}.stk.mint{background:var(--mint)}.stk.w{background:#fff}
+.sh .t{flex:1;min-width:260px}
+.sh p{margin-top:10px;color:var(--muted);max-width:56ch;font-weight:600}
+
+/* шапка */
+header{position:sticky;top:0;z-index:50;background:var(--y);border-bottom:var(--bd)}
+.hd{display:flex;align-items:center;gap:26px;height:74px}
+.logo{display:flex;align-items:center;font:400 21px/1 var(--h);text-decoration:none;background:#000;color:#fff;padding:9px 13px;border-radius:12px}
+.logo svg{width:34px;height:20px;color:var(--y);margin:0 2px}
+.nav{display:flex;gap:20px;font-weight:800;font-size:15.5px}
+.nav a{text-decoration:none}
+.nav a:hover{text-decoration:underline 3px}
+.hd-r{margin-left:auto;display:flex;align-items:center;gap:10px}
+.tel{font-weight:900;font-size:18px;text-decoration:none;white-space:nowrap;padding:0 6px}
+.ib{width:46px;height:46px;border:var(--bd);border-radius:14px;display:grid;place-items:center;box-shadow:3px 3px 0 #000}
+.ib svg{width:22px;height:22px}
+.ib.wa{background:#25D366;color:#fff}.ib.gis{background:#2FB540;color:#fff}
+.hd .btn{padding:12px 18px;font-size:15px}
+
+/* первый экран */
+.hero{background:var(--y);border-bottom:var(--bd);overflow:hidden}
+.hero-g{display:grid;grid-template-columns:minmax(0,1fr) 440px;gap:48px;align-items:center;padding:64px 0 76px}
+.hero h1{font-size:clamp(34px,3.9vw,54px);line-height:1.08}
+.hero .sub{font-size:20px;margin:24px 0 32px;max-width:42ch}
+.cta{display:flex;gap:14px;flex-wrap:wrap}
+.tags{display:flex;gap:10px;flex-wrap:wrap;margin-top:34px}
+.tags span{border:var(--bd);border-radius:999px;padding:7px 14px;background:#fff;font-weight:800;font-size:14.5px}
+.tags span:nth-child(2){background:var(--pink)}.tags span:nth-child(3){background:var(--sky)}.tags span:nth-child(4){background:var(--mint)}
+
+/* карточка «Скажи по-английски» */
+.say{position:relative;justify-self:center;width:100%;max-width:440px}
+.say .lbl{position:absolute;top:-18px;left:22px;z-index:3;background:#000;color:var(--y);font:400 14px/1 var(--h);padding:10px 14px;border-radius:12px;transform:rotate(-3deg)}
+.card{perspective:1200px;cursor:pointer;border:0;background:none;padding:0;width:100%;display:block;font:inherit;color:inherit;text-align:left}
+.card-in{display:block;position:relative;height:290px;transform-style:preserve-3d;transition:transform .6s cubic-bezier(.3,1.4,.5,1)}
+.card.flip .card-in{transform:rotateY(180deg)}
+.face{position:absolute;inset:0;backface-visibility:hidden;border:var(--bd);border-radius:28px;box-shadow:10px 10px 0 #000;padding:42px 30px 26px;display:flex;flex-direction:column}
+.face.ru{background:#fff}
+.face.en{background:var(--pink);transform:rotateY(180deg)}
+.face small{font-weight:800;font-size:14px;color:var(--muted)}
+.face.en small{color:#000}
+.face b{font:900 clamp(26px,2.6vw,34px)/1.15 var(--b);margin-top:12px;flex:1}
+.face .hint{display:flex;align-items:center;gap:8px;font-weight:800;font-size:14.5px}
+.face .hint svg{width:20px;height:20px}
+.say-nav{display:flex;justify-content:space-between;align-items:center;margin-top:24px}
+.say-nav .dots{display:flex;gap:6px}
+.say-nav .dots i{width:12px;height:12px;border:2px solid #000;border-radius:50%}
+.say-nav .dots i.on{background:#000}
+.say-nav button{border:var(--bd);background:#fff;border-radius:12px;padding:9px 14px;font:900 14.5px var(--b);cursor:pointer;box-shadow:3px 3px 0 #000}
+.star-b{position:absolute;right:-18px;top:-30px;width:86px;height:86px;color:var(--sky);animation:spin 14s linear infinite;z-index:2}
+.star-b path{stroke:#000;stroke-width:3}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* бегущая строка */
+.ticker{background:#000;color:var(--y);overflow:hidden;border-bottom:var(--bd);white-space:nowrap}
+.ticker div{display:inline-flex;gap:40px;padding:16px 0;font:400 20px/1 var(--h);animation:run 30s linear infinite}
+.ticker span{display:inline-flex;align-items:center;gap:40px}
+.ticker span::after{content:"✦";color:var(--pink)}
+@keyframes run{to{transform:translateX(-50%)}}
+
+/* сейчас в StudyOn */
+.now{background:#fff;border:var(--bd);border-radius:30px;box-shadow:var(--sh);padding:32px}
+.now-top{display:flex;align-items:center;gap:20px;flex-wrap:wrap;margin-bottom:26px}
+.clock{font:400 44px/1 var(--h);background:#000;color:var(--y);padding:14px 18px;border-radius:18px}
+.now-st{flex:1;min-width:240px}
+.now-st b{display:flex;align-items:center;gap:10px;font-size:22px;font-weight:900}
+.now-st b i{width:14px;height:14px;border-radius:50%;background:#25D366;box-shadow:0 0 0 0 rgba(37,211,102,.6);animation:pulse 1.6s infinite}
+.now-st b i.off{background:#E5484D;animation:none}
+@keyframes pulse{70%{box-shadow:0 0 0 12px rgba(37,211,102,0)}100%{box-shadow:0 0 0 0 rgba(37,211,102,0)}}
+.now-st p{color:var(--muted)}
+.tl{position:relative;padding-top:4px}
+.tl-row{display:grid;grid-template-columns:120px 1fr;gap:14px;align-items:center;margin-bottom:10px}
+.tl-row>span{font-weight:900;font-size:14.5px}
+.tl-bar{position:relative;height:40px;background:var(--paper);border:2px solid #000;border-radius:12px}
+.tl-bar i{position:absolute;top:3px;bottom:3px;border-radius:8px;border:2px solid #000;font:800 12.5px/30px var(--b);font-style:normal;padding:0 8px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+.tl-scale{display:grid;grid-template-columns:120px 1fr;gap:14px}
+.tl-scale div{display:flex;justify-content:space-between;font-weight:800;font-size:13px;color:var(--muted)}
+.tl-now{position:absolute;top:-6px;bottom:22px;width:4px;background:#E5484D;border-radius:4px;z-index:2}
+.tl-now::before{content:"сейчас";position:absolute;top:-22px;left:50%;transform:translateX(-50%);font:900 12px var(--b);color:#E5484D;white-space:nowrap}
+.tl-area{position:absolute;left:134px;right:0;top:0;bottom:0;pointer-events:none}
+
+/* курсы-стикеры */
+.courses{display:grid;grid-template-columns:repeat(4,1fr);gap:26px}
+.cc{border:var(--bd);border-radius:26px;box-shadow:var(--sh);padding:26px;display:flex;flex-direction:column;gap:12px;background:#fff}
+.cc:nth-child(1){background:var(--y);transform:rotate(-1.5deg)}
+.cc:nth-child(2){background:var(--pink);transform:rotate(1deg)}
+.cc:nth-child(3){background:var(--sky);transform:rotate(-1deg)}
+.cc:nth-child(4){background:var(--mint);transform:rotate(1.5deg)}
+.cc .ci{width:54px;height:54px;border:var(--bd);border-radius:16px;background:#fff;display:grid;place-items:center}
+.cc .ci svg{width:26px;height:26px}
+.cc p{flex:1;font-weight:600}
+.cc .pr{font:400 18px/1 var(--h)}
+.cc .pr small{display:block;font:800 13px var(--b);margin-top:6px}
+.cc .btn{padding:11px 14px;font-size:14.5px;box-shadow:3px 3px 0 #000}
+.note{font-size:14px;color:var(--muted);margin-top:26px;font-weight:700}
+
+/* тест */
+.test{background:var(--sky);border-block:var(--bd)}
+.test-g{display:grid;grid-template-columns:.8fr 1.2fr;gap:52px;align-items:start}
+.test .sh p{color:#0F2F44}
+.prize{border:var(--bd);background:#fff;border-radius:22px;padding:22px;box-shadow:4px 4px 0 #000;display:grid;gap:12px}
+.prize div{display:flex;gap:12px;align-items:center;font-weight:800}
+.prize svg{width:22px;height:22px;flex:0 0 auto}
+.qbox{background:#fff;border:var(--bd);border-radius:28px;box-shadow:var(--sh);padding:32px;min-height:430px;
+  --qa:#000;--qopt:var(--paper);--qh:var(--b);--qtrack:#EDE8CB;--qnext:var(--y);--qcall:#000;--qcallfg:var(--y);--qr:14px}
+.qbox .qt-opts button{border:2px solid #000}
+.qbox .qt-q{font-weight:900}
+
+/* сезонные наборы с отсчётом */
+.seas{display:grid;grid-template-columns:1.2fr 1fr 1fr;gap:26px}
+.sc{border:var(--bd);border-radius:26px;padding:28px;box-shadow:var(--sh);background:#fff;display:flex;flex-direction:column;gap:10px}
+.sc.hot{background:#000;color:#fff}
+.sc .when{font-weight:900;font-size:15px;align-self:flex-start;border:2px solid currentColor;border-radius:999px;padding:4px 12px}
+.sc.hot .when{color:var(--y)}
+.sc p{flex:1}
+.sc.hot p{color:#D6D6CF}
+.cd{display:flex;gap:10px;margin:8px 0 6px}
+.cd div{background:var(--y);color:#000;border-radius:14px;padding:10px 12px;text-align:center;min-width:72px}
+.cd b{display:block;font:400 30px/1 var(--h)}
+.cd small{font-weight:800;font-size:12.5px}
+
+/* учителя-перевёртыши */
+.team{display:grid;grid-template-columns:repeat(4,1fr);gap:26px}
+.tf{display:block;width:100%;perspective:1000px;border:0;background:none;padding:0;cursor:pointer;font:inherit;color:inherit;text-align:left}
+.tf-in{display:block;position:relative;aspect-ratio:3/3.6;transform-style:preserve-3d;transition:transform .6s cubic-bezier(.3,1.4,.5,1)}
+.tf:hover .tf-in,.tf.flip .tf-in{transform:rotateY(180deg)}
+.tf .fc{position:absolute;inset:0;backface-visibility:hidden;border:var(--bd);border-radius:24px;box-shadow:var(--sh);overflow:hidden;display:flex;flex-direction:column;background:#fff}
+.tf .fc .ph{flex:1;border-bottom:var(--bd);display:block}
+.tf .fc .cap{padding:16px 18px}
+.tf .fc .cap{display:block}
+.tf .fc .cap b{display:block;font:900 20px/1.2 var(--b)}
+.tf .fc .cap span{font-weight:700;font-size:14.5px;color:var(--muted)}
+.tf .bk{transform:rotateY(180deg);padding:24px;justify-content:space-between}
+.tf:nth-child(1) .bk{background:var(--y)}.tf:nth-child(2) .bk{background:var(--pink)}.tf:nth-child(3) .bk{background:var(--sky)}.tf:nth-child(4) .bk{background:var(--mint)}
+.tf .bk q{font:900 21px/1.3 var(--b);quotes:"«" "»"}
+.tf .bk ul{margin:0;padding:0 0 0 18px;font-weight:700;font-size:15px}
+.flip-h{display:inline-flex;align-items:center;gap:8px;margin-top:22px;font-weight:800;color:var(--muted)}
+
+/* отзывы-переписка */
+.chats{display:grid;grid-template-columns:repeat(3,1fr);gap:26px}
+.ch{border:var(--bd);border-radius:26px;box-shadow:var(--sh);background:#E8F7E1;overflow:hidden}
+.ch-h{display:flex;align-items:center;gap:12px;padding:14px 18px;background:#fff;border-bottom:var(--bd)}
+.ch-h .ph{width:42px;height:42px;border-radius:50%;border:2px solid #000}
+.ch-h b{display:block;font-weight:900}
+.ch-h span{font-size:13px;color:var(--muted)}
+.ch-b{padding:18px;display:flex;flex-direction:column;gap:10px}
+.bb{background:#fff;border:2px solid #000;border-radius:16px 16px 16px 4px;padding:10px 14px;max-width:88%;font-weight:600;font-size:15.5px}
+.bb.me{align-self:flex-end;background:var(--y);border-radius:16px 16px 4px 16px}
+.bb small{display:block;text-align:right;font-size:11.5px;color:var(--muted);margin-top:2px}
+
+/* филиалы — вкладки */
+.tabs{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:26px}
+.tabs button{border:var(--bd);background:#fff;border-radius:14px;padding:12px 20px;font:900 16px var(--b);cursor:pointer;box-shadow:3px 3px 0 #000}
+.tabs button[aria-selected="true"]{background:#000;color:var(--y)}
+.brc{display:grid;grid-template-columns:1.1fr .9fr;gap:26px}
+.map{border:var(--bd);border-radius:26px;box-shadow:var(--sh);background:
+  linear-gradient(90deg,transparent 48%,#fff 48%,#fff 52%,transparent 52%),
+  linear-gradient(0deg,transparent 46%,#fff 46%,#fff 54%,transparent 54%),
+  linear-gradient(35deg,transparent 60%,#fff 60%,#fff 63%,transparent 63%),#BFE7F7;min-height:300px;position:relative;overflow:hidden}
+.map .pin{position:absolute;left:50%;top:50%;transform:translate(-50%,-100%);width:64px;height:64px;color:#E5484D;filter:drop-shadow(3px 3px 0 #000)}
+.map .pl{position:absolute;left:50%;top:calc(50% + 8px);transform:translateX(-50%);background:#000;color:var(--y);font:900 14px var(--b);padding:6px 12px;border-radius:10px;white-space:nowrap}
+.info{border:var(--bd);border-radius:26px;box-shadow:var(--sh);background:#fff;padding:30px;display:flex;flex-direction:column;gap:14px}
+.info h3{font:400 26px/1.1 var(--h)}
+.info p{color:var(--muted)}
+.info .row{display:flex;gap:10px;flex-wrap:wrap;margin-top:auto}
+.info .ln{display:flex;gap:10px;align-items:center;font-weight:800}
+.info .ln svg{width:20px;height:20px}
+
+/* финал */
+.end{background:#000;color:#fff;padding:96px 0}
+.end-g{display:flex;align-items:center;gap:32px;flex-wrap:wrap}
+.end h2{color:var(--y);flex:1;min-width:300px}
+.end .tel-big{font:400 clamp(26px,3vw,40px)/1 var(--h);color:#fff;text-decoration:none;display:block;margin-top:16px}
+.end .btn{box-shadow:4px 4px 0 var(--y);border-color:var(--y)}
+footer{background:#000;color:#9C9C94;padding:0 0 40px;font-size:14px;font-weight:700}
+.ft{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;border-top:1px solid #333;padding-top:26px}
+.ft a{color:#fff;text-decoration:none}
+
+@media (max-width:1100px){.nav{display:none}.courses,.team{grid-template-columns:1fr 1fr}.seas{grid-template-columns:1fr 1fr}.seas .sc.hot{grid-column:1/-1}}
+@media (max-width:980px){.hero-g{grid-template-columns:1fr}}
+@media (max-width:760px){
+  body{font-size:16.5px}
+  .wrap{width:calc(100% - 32px)}
+  .sec{padding:76px 0}
+  .sh{gap:16px;margin-bottom:36px}
+  .stk{width:56px;height:56px;border-radius:16px}
+  .stk svg{width:26px;height:26px}
+  .sh .t{min-width:0}
+  h2{font-size:clamp(23px,7vw,30px)}
+  .hd{height:64px;gap:10px}
+  html{scroll-padding-top:74px}
+  .logo{font-size:16px;padding:8px 10px}
+  .logo svg{width:28px;height:17px}
+  .hd .btn,.ib{display:none}
+  .tel{font-size:15px;padding:0}
+  .hero-g{grid-template-columns:1fr;gap:52px;padding:40px 0 60px}
+  .hero h1{font-size:clamp(30px,9.4vw,42px)}
+  .hero .sub{font-size:18px;margin:18px 0 26px}
+  .cta .btn{flex:1}
+  .card-in{height:240px}
+  .face{padding:38px 22px 20px;box-shadow:7px 7px 0 #000}
+  .star-b{width:64px;height:64px;right:-6px;top:-34px}
+  .ticker div{font-size:16px;gap:28px;padding:13px 0}
+  .ticker span{gap:28px}
+  .now{padding:20px}
+  .clock{font-size:32px}
+  .tl{overflow-x:auto;padding-bottom:10px;margin-inline:-4px;padding-inline:4px}
+  .tl-bar,.tl-scale div{min-width:640px}
+  .tl-row>span{position:sticky;left:0}
+  .tl-row,.tl-scale{grid-template-columns:1fr;gap:6px}
+  .tl-scale>span{display:none}
+  .tl-area{left:0;top:26px}
+  .tl-row{margin-bottom:14px}
+  .tl-now{display:none}
+  .courses,.team,.seas,.chats,.brc,.test-g{grid-template-columns:1fr}
+  .team{grid-template-columns:1fr 1fr;gap:16px}
+  .tf .fc{border-radius:18px;box-shadow:4px 4px 0 #000}
+  .tf .fc .cap{padding:10px 12px}
+  .tf .fc .cap b{font-size:16px}
+  .tf .fc .cap span{font-size:12.5px}
+  .tf .bk{padding:14px}
+  .tf .bk q{font-size:15px}
+  .tf .bk ul{font-size:12.5px}
+  .test-g{gap:32px}
+  .qbox{padding:20px 16px;min-height:0}
+  .cd div{min-width:0;flex:1}
+  .map{min-height:200px}
+  .info{padding:22px}
+  .info .row .btn{flex:1}
+  .end{padding:72px 0}
+  .end .btn{flex:1}
+}
+</style>
+</head>
+<body>
+<!--SWITCH:START-->
+<style>
+  .sw-bar{position:sticky;top:0;z-index:100;display:none;align-items:center;gap:12px;flex-wrap:wrap;
+    background:#141414;color:#fff;font:500 13px/1.2 system-ui,"Segoe UI",sans-serif;
+    padding:7px max(12px,env(safe-area-inset-right)) 7px max(12px,env(safe-area-inset-left))}
+  body.has-sw .sw-bar{display:flex}
+  body.has-sw header{top:var(--swh,44px)}
+  .sw-bar .sw-t{font-weight:700;letter-spacing:.08em;white-space:nowrap}
+  .sw-bar .sw-t span{font-weight:400;letter-spacing:0;color:#9a9a9a;margin-left:6px}
+  .sw-bar .sw-g{display:flex;background:#2a2a2a;border-radius:9px;padding:3px}
+  .sw-bar .sw-g:first-of-type{margin-left:auto}
+  .sw-bar a{color:#cfcfcf;text-decoration:none;padding:6px 11px;border-radius:7px;white-space:nowrap}
+  .sw-bar a:hover{color:#fff}
+  .sw-bar a[aria-current="true"]{background:#fff;color:#141414;font-weight:600}
+  .sw-bar a:focus-visible{outline:2px solid #FFE000;outline-offset:2px}
+  @media (max-width:700px){.sw-bar .sw-t{display:none}.sw-bar .sw-g:first-of-type{margin-left:0}.sw-bar .sw-g{flex:1}.sw-bar a{flex:1;text-align:center;padding:6px 4px}}
+</style>
+<nav class="sw-bar" aria-label="Переключатель макетов"><div class="sw-t">StudyOn<span>макеты сайта</span></div><div class="sw-g" role="group" aria-label="Сайт"><a href="v1-vklyuchi.html" aria-current="false">1 · Включи</a><a href="v2-6nedel.html" aria-current="false">2 · 6 недель</a><a href="v3-govorim.html" aria-current="true">3 · Говорим!</a></div><div class="sw-g" role="group" aria-label="Устройство"><a href="v3-govorim.html" aria-current="true">ПК</a><a href="index.html#v3-mob" aria-current="false">Телефон</a></div></nav>
+<script>if(window.top===window.self){document.body.classList.add("has-sw");const swh=()=>{const h=document.querySelector(".sw-bar").offsetHeight;document.body.style.setProperty("--swh",h+"px");document.documentElement.style.scrollPaddingTop=(h+90)+"px";};swh();addEventListener("resize",swh);}</script>
+<!--SWITCH:END-->
+<!--CORE:START-->
+<!-- Общая часть для всех вариантов StudyOn (build.py вставляет её между CORE:START и CORE:END).
+     Здесь: значки (sprite), нижняя панель на телефоне, ссылки WhatsApp и 2ГИС, тест уровня из 10 вопросов.
+     Цвета панели задаёт вариант: --mb-bg, --mb-fg. -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-wa" viewBox="0 0 24 24"><path fill="currentColor" d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm5.3 14.1c-.2.6-1.3 1.2-1.8 1.2-.5.1-1 .2-3.3-.7-2.8-1.1-4.5-4-4.7-4.2-.1-.2-1.1-1.5-1.1-2.8s.7-2 1-2.3c.2-.3.5-.3.7-.3h.5c.2 0 .4 0 .6.5l.8 2c.1.2.1.4 0 .5l-.3.5-.4.4c-.1.1-.3.3-.1.6.2.3.8 1.3 1.6 2.1 1.1 1 2 1.3 2.3 1.4.3.1.5.1.6-.1l.9-1.1c.2-.3.4-.2.6-.1l2 .9c.3.1.4.2.5.3.1.2.1.7-.2 1.3z"/></symbol>
+  <symbol id="i-phone" viewBox="0 0 24 24"><path fill="currentColor" d="M6.6 10.8a15 15 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4 11.4 0 0 0 3.6.6 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.6 3.6a1 1 0 0 1-.25 1z"/></symbol>
+  <symbol id="i-pin" viewBox="0 0 24 24"><path fill="currentColor" d="M12 2a7 7 0 0 0-7 7c0 5 7 13 7 13s7-8 7-13a7 7 0 0 0-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></symbol>
+  <symbol id="i-ig" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" d="M7 3h10a4 4 0 0 1 4 4v10a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V7a4 4 0 0 1 4-4z"/><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="17.5" cy="6.5" r="1.2" fill="currentColor"/></symbol>
+  <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 7v5l3 2" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+  <symbol id="i-star" viewBox="0 0 24 24"><path fill="currentColor" d="m12 2.5 2.9 6 6.6.9-4.8 4.6 1.2 6.5L12 17.4l-5.9 3.1 1.2-6.5L2.5 9.4l6.6-.9z"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12.5 4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-cal" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="3" fill="none" stroke="currentColor" stroke-width="2"/><path d="M3 10h18M8 3v4M16 3v4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+  <symbol id="i-users" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M2.5 20c.6-3.6 3.2-5.5 6.5-5.5s5.9 1.9 6.5 5.5M16 4.8a3.4 3.4 0 0 1 0 6.4M18 14.8c2 .6 3.2 2.4 3.5 5.2" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+  <symbol id="i-chat" viewBox="0 0 24 24"><path d="M4 5h16v11H9l-5 4z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></symbol>
+  <symbol id="i-tag" viewBox="0 0 24 24"><path d="M3 12V4h8l10 10-8 8z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><circle cx="7.5" cy="8.5" r="1.5" fill="currentColor"/></symbol>
+  <symbol id="i-cap" viewBox="0 0 24 24"><path d="M2 9l10-5 10 5-10 5z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M6 11v5c3.5 2.5 8.5 2.5 12 0v-5" fill="none" stroke="currentColor" stroke-width="2"/></symbol>
+  <symbol id="i-q" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M9.3 9.2a2.8 2.8 0 1 1 3.8 2.6c-.8.4-1.1.9-1.1 1.7v.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><circle cx="12" cy="17.3" r="1.2" fill="currentColor"/></symbol>
+  <symbol id="i-trophy" viewBox="0 0 24 24"><path d="M7 4h10v5a5 5 0 0 1-10 0zM7 6H4c0 3 1.5 4.5 3.3 4.8M17 6h3c0 3-1.5 4.5-3.3 4.8M12 14v4M8 21h8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-laptop" viewBox="0 0 24 24"><rect x="4" y="5" width="16" height="11" rx="2" fill="none" stroke="currentColor" stroke-width="2"/><path d="M2 19h20" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+  <symbol id="i-book" viewBox="0 0 24 24"><path d="M4 5.5C4 4.7 4.7 4 5.5 4H11v16H5.5A1.5 1.5 0 0 1 4 18.5zM20 5.5c0-.8-.7-1.5-1.5-1.5H13v16h5.5c.8 0 1.5-.7 1.5-1.5z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></symbol>
+  <symbol id="i-kid" viewBox="0 0 24 24"><circle cx="12" cy="7" r="3.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M6 21v-4a6 6 0 0 1 12 0v4M9 14l-3-3M15 14l3-3" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+  <symbol id="i-globe" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="2"/><path d="M3 12h18M12 3c2.6 2.8 3.8 5.8 3.8 9s-1.2 6.2-3.8 9c-2.6-2.8-3.8-5.8-3.8-9S9.4 5.8 12 3z" fill="none" stroke="currentColor" stroke-width="2"/></symbol>
+  <symbol id="i-person" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4" fill="currentColor"/><path d="M4 21c.8-4.6 4-7 8-7s7.2 2.4 8 7z" fill="currentColor"/></symbol>
+  <symbol id="i-one" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M2.5 20c.6-3.6 3.2-5.5 6.5-5.5s5.9 1.9 6.5 5.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M18 6v8M15.5 8.5 18 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M4.9 19.1l1.8-1.8M17.3 6.7l1.8-1.8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+  <symbol id="i-moon" viewBox="0 0 24 24"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></symbol>
+  <!-- тумблер из логотипа StudyOn: буква «O» — выключатель в положении ON -->
+  <symbol id="i-on" viewBox="0 0 40 24"><rect x="1.5" y="1.5" width="37" height="21" rx="10.5" fill="none" stroke="currentColor" stroke-width="3"/><circle cx="28" cy="12" r="6.5" fill="currentColor"/></symbol>
+</svg>
+
+<style>
+.mbar{display:none}
+.ph{position:relative;overflow:hidden;background:var(--ph-bg,#f1efe6);color:var(--ph-fg,#b9b39a)}
+.ph>svg.ph-i{position:absolute;left:50%;bottom:-6%;width:78%;height:78%;transform:translateX(-50%);opacity:.55}
+@media (max-width:760px){
+  body{padding-bottom:78px}
+  .mbar{display:grid;grid-template-columns:1fr 1.35fr 1fr;gap:8px;position:fixed;left:0;right:0;bottom:0;z-index:60;padding:10px 12px calc(10px + env(safe-area-inset-bottom,0px));background:var(--mb-bg,#fff);box-shadow:0 -8px 24px rgba(0,0,0,.14)}
+  .mbar a{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;border-radius:14px;padding:8px 4px;font:700 12px/1.2 system-ui,sans-serif;text-decoration:none;color:var(--mb-fg,#222);background:rgba(127,127,127,.15)}
+  .mbar svg{width:22px;height:22px}
+  .mbar a.wa{background:#25D366;color:#fff;font-size:13px}
+  .mbar a.gis{background:#2FB540;color:#fff}
+}
+/* ===== Тест уровня (10 вопросов) — общий для вариантов 1 и 3.
+   Цвета задаёт вариант через переменные на контейнере:
+   --qa акцент, --qopt фон ответа, --qh шрифт заголовков, --qtrack пустые полоски,
+   --qnext фон блока «что дальше», --qcall/--qcallfg кнопка «Позвонить», --qr скругление */
+.qt{display:flex;flex-direction:column}
+.qt-prog{display:flex;gap:5px;margin-bottom:18px}
+.qt-prog i{flex:1;height:6px;border-radius:6px;background:var(--qtrack,rgba(127,127,127,.2))}
+.qt-prog i.on{background:var(--qa,#000)}
+.qt-n{font-size:14px;font-weight:600;opacity:.7}
+.qt-q{font-family:var(--qh,inherit);font-weight:700;font-size:clamp(21px,2.3vw,28px);line-height:1.3;margin:8px 0 20px}
+.qt-q u{text-decoration:none;border-bottom:3px dotted var(--qa,#000);padding:0 8px}
+.qt-opts{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.qt-opts button{border:0;background:var(--qopt,#fff);color:inherit;border-radius:var(--qr,16px);padding:15px 18px;text-align:left;font-family:inherit;font-weight:600;font-size:16.5px;line-height:1.2;cursor:pointer;box-shadow:inset 0 0 0 2px transparent;transition:box-shadow .15s,background .15s}
+.qt-opts button:hover:not(:disabled){box-shadow:inset 0 0 0 2px var(--qa,#000)}
+.qt-opts button.ok{background:#1FA36B;color:#fff}
+.qt-opts button.no{background:#E5484D;color:#fff}
+.qt-opts button:disabled{cursor:default}
+.qt-lvl{font-family:var(--qh,inherit);font-weight:800;font-size:clamp(32px,3.8vw,46px);line-height:1.05;color:var(--qa,#000);margin:6px 0 10px}
+.qt-dots{display:flex;gap:4px;margin:2px 0 14px}
+.qt-dots i{width:16px;height:8px;border-radius:4px;background:#E5484D;opacity:.75}
+.qt-dots i.ok{background:#1FA36B;opacity:1}
+.qt-res p{margin:0 0 16px}
+.qt-next{background:var(--qnext,rgba(127,127,127,.1));border-radius:var(--qr,16px);padding:16px 18px}
+.qt-next b{display:block;margin-bottom:12px}
+.qt-btns{display:flex;gap:8px;flex-wrap:wrap}
+.qt-btns a,.qt-btns button{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:0;border-radius:var(--qr,16px);padding:13px 18px;font-family:inherit;font-weight:700;font-size:15px;line-height:1;text-decoration:none;cursor:pointer;white-space:nowrap}
+.qt-btns svg{width:18px;height:18px}
+.qt-wa{background:#25D366;color:#fff}
+.qt-call{background:var(--qcall,var(--qa,#000));color:var(--qcallfg,#fff)}
+.qt-btns .qt-again{background:none;color:inherit;text-decoration:underline;opacity:.75;padding:13px 6px}
+@media (max-width:760px){.qt-opts{grid-template-columns:1fr}.qt-btns a{flex:1}}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
+</style>
+<nav class="mbar" aria-label="Быстрая связь">
+  <a href="tel:+996990313800"><svg><use href="#i-phone"/></svg><span>Позвонить</span></a>
+  <a class="wa" data-wa href="https://wa.me/996990313800" target="_blank" rel="noopener"><svg><use href="#i-wa"/></svg>WhatsApp</a>
+  <a class="gis" data-gis href="https://2gis.kg/bishkek/search/StudyOn" target="_blank" rel="noopener"><svg><use href="#i-pin"/></svg>2ГИС</a>
+</nav>
+
+<script>
+/* ===== Ссылки WhatsApp и 2ГИС =====
+   <a data-wa="готовый текст"> — номер и сообщение подставляются сами (пусто — текст по умолчанию).
+   <a data-gis> — 2ГИС центра; data-gis="asanbay" | "filarm" | "tokmok" — конкретный филиал. */
+(function(){
+  var WA = "https://wa.me/996990313800?text=";
+  var WA_DEF = "Здравствуйте! Хочу записаться на бесплатный пробный урок в StudyOn";
+  var GIS = {
+    "":       "https://2gis.kg/bishkek/search/StudyOn%20%D0%BA%D1%83%D1%80%D1%81%D1%8B%20%D0%B0%D0%BD%D0%B3%D0%BB%D0%B8%D0%B9%D1%81%D0%BA%D0%BE%D0%B3%D0%BE",
+    asanbay:  "https://2gis.kg/bishkek/search/%D0%90%D1%80%D1%81%D1%82%D0%B0%D0%BD%D0%B1%D0%B5%D0%BA%D0%B0%20%D0%94%D1%83%D0%B9%D1%88%D0%B5%D0%B5%D0%B2%D0%B0%206%2F4",
+    filarm:   "https://2gis.kg/bishkek/search/%D0%BF%D1%80%D0%BE%D1%81%D0%BF%D0%B5%D0%BA%D1%82%20%D0%9C%D0%B0%D0%BD%D0%B0%D1%81%D0%B0%2064%2F1",
+    tokmok:   "https://2gis.kg/tokmok/search/%D0%A8%D0%B0%D0%BC%D1%81%D0%B8%D0%BD%D1%81%D0%BA%D0%B0%D1%8F%2044"
+  };
+  window.SOwa = function(){
+    document.querySelectorAll("a[data-wa]").forEach(function(a){
+      a.href = WA + encodeURIComponent(a.dataset.wa || WA_DEF); a.target = "_blank"; a.rel = "noopener";
+    });
+    document.querySelectorAll("a[data-gis]").forEach(function(a){
+      a.href = GIS[a.dataset.gis] || GIS[""]; a.target = "_blank"; a.rel = "noopener";
+    });
+  };
+  window.SOwaLink = function(t){ return WA + encodeURIComponent(t); };
+  window.SOreduced = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", window.SOwa); else window.SOwa();
+})();
+
+/* ===== Тест уровня: SOtest(элемент) — 10 вопросов → уровень → «Что дальше?»: WhatsApp с результатом или звонок ===== */
+(function(){
+  var Q=[
+    ["She ___ from Bishkek.",["is","are","am","be"],0],
+    ["There ___ two books on the table.",["is","are","be","am"],1],
+    ["I ___ to the cinema yesterday.",["go","went","have gone","was go"],1],
+    ["He usually ___ coffee in the morning.",["drink","drinks","drinking","is drink"],1],
+    ["If it rains, we ___ at home.",["stay","will stay","would stay","stayed"],1],
+    ["I've lived here ___ 2019.",["for","since","from","during"],1],
+    ["This is the ___ film I've ever seen.",["good","better","best","most good"],2],
+    ["The letter ___ yesterday.",["sent","was sent","has sent","is sending"],1],
+    ["If I ___ you, I would take this job.",["am","was being","were","will be"],2],
+    ["I wish I ___ more time last year.",["have","had","had had","would have"],2]
+  ];
+  var LV=[
+    {n:"Beginner",t:"Начнём с нуля: группа Beginner, утром или вечером. Через 2–3 месяца — следующий уровень."},
+    {n:"Elementary",t:"Подойдёт группа Elementary. Уже можно ходить в Talking Club — слушать и отвечать короткими фразами."},
+    {n:"Pre-Intermediate",t:"Подойдёт группа Pre-Intermediate и Talking Club с носителем раз в неделю — чтобы заговорить свободнее."},
+    {n:"Intermediate",t:"Вы уже говорите. Дальше — группа Intermediate или курс «Разговорный английский за 6 недель»."},
+    {n:"Upper-Intermediate+",t:"Сильный уровень. Рекомендуем подготовку к IELTS по всем 4 секциям или индивидуальные занятия."}
+  ];
+  var MAP=[0,0,0,1,1,2,2,3,3,4,4];
+  window.SOtest=function(el){
+    var qi=0, ans=[], lock=false, n=Q.length;
+    el.classList.add("qt");
+    function draw(){
+      var prog='<div class="qt-prog">'+Q.map(function(_,i){return '<i class="'+(i<=qi?"on":"")+'"></i>';}).join("")+'</div>';
+      if(qi>=n){
+        var sc=ans.filter(Boolean).length, r=LV[MAP[sc]];
+        var wa="Здравствуйте! Прошёл(а) тест на сайте StudyOn: "+sc+" из 10, уровень "+r.n+". Хочу записаться на бесплатный пробный урок.";
+        el.innerHTML=prog+'<div class="qt-res" aria-live="polite"><span class="qt-n">Ваш примерный уровень</span>'+
+          '<div class="qt-lvl">'+r.n+'</div>'+
+          '<div class="qt-dots" role="img" aria-label="'+sc+' из 10">'+ans.map(function(a){return '<i class="'+(a?"ok":"")+'"></i>';}).join("")+'</div>'+
+          '<p><b>Правильных ответов: '+sc+' из 10. </b>'+r.t+'</p>'+
+          '<div class="qt-next"><b>Что дальше? Отправьте результат — подберём группу и запишем на бесплатный пробный урок.</b>'+
+          '<div class="qt-btns"><a class="qt-wa" target="_blank" rel="noopener" href="'+window.SOwaLink(wa)+'"><svg><use href="#i-wa"/></svg>Отправить в WhatsApp</a>'+
+          '<a class="qt-call" href="tel:+996990313800"><svg><use href="#i-phone"/></svg>Позвонить</a>'+
+          '<button class="qt-again" type="button">Пройти заново</button></div></div></div>';
+        el.querySelector(".qt-again").onclick=function(){qi=0;ans=[];draw();};
+        return;
+      }
+      var q=Q[qi];
+      el.innerHTML=prog+'<span class="qt-n">Вопрос '+(qi+1)+' из '+n+' · вставьте пропущенное слово</span>'+
+        '<div class="qt-q">'+q[0].replace("___","<u>&nbsp;?&nbsp;</u>")+'</div>'+
+        '<div class="qt-opts">'+q[1].map(function(o,i){return '<button type="button" data-i="'+i+'">'+o+'</button>';}).join("")+'</div>';
+      el.querySelectorAll(".qt-opts button").forEach(function(b){
+        b.onclick=function(){
+          if(lock)return; lock=true;
+          var ok=+b.dataset.i===q[2]; ans.push(ok);
+          el.querySelectorAll(".qt-opts button").forEach(function(x){x.disabled=true; if(+x.dataset.i===q[2])x.classList.add("ok");});
+          if(!ok)b.classList.add("no");
+          setTimeout(function(){lock=false;qi++;draw();},window.SOreduced?150:650);
+        };
+      });
+    }
+    draw();
+  };
+})();
+</script>
+
+<!--CORE:END-->
+
+<header>
+  <div class="wrap hd">
+    <a class="logo" href="#top" aria-label="StudyOn — на главную">STUDY<svg><use href="#i-on"/></svg>N</a>
+    <nav class="nav" aria-label="Разделы"><a href="#now">Сейчас</a><a href="#courses">Курсы</a><a href="#test">Тест</a><a href="#sets">Наборы</a><a href="#team">Учителя</a><a href="#reviews">Отзывы</a><a href="#branches">Филиалы</a></nav>
+    <div class="hd-r">
+      <a class="tel" href="tel:+996990313800">+996 990 31 38 00</a>
+      <a class="ib wa" data-wa href="#" aria-label="WhatsApp"><svg><use href="#i-wa"/></svg></a>
+      <a class="ib gis" data-gis href="#" aria-label="2ГИС"><svg><use href="#i-pin"/></svg></a>
+      <a class="btn btn-k" data-wa href="#">Пробный урок</a>
+    </div>
+  </div>
+</header>
+
+<main id="top">
+<section class="hero" aria-labelledby="h1">
+  <div class="wrap hero-g">
+    <div>
+      <h1 id="h1">Заговори по-английски с первого урока</h1>
+      <p class="sub">Курсы для школьников, студентов и взрослых. Игры, фильмы, Talking Club с носителем — и никакой зубрёжки.</p>
+      <div class="cta">
+        <a class="btn btn-k" data-wa href="#"><svg><use href="#i-wa"/></svg>Бесплатный пробный урок</a>
+        <a class="btn" href="tel:+996990313800"><svg><use href="#i-phone"/></svg>+996 990 31 38 00</a>
+      </div>
+      <div class="tags"><span>5000+ студентов</span><span>Дети 6–12</span><span>IELTS</span><span>3 филиала</span></div>
+    </div>
+    <div class="say">
+      <svg class="star-b" viewBox="0 0 100 100" aria-hidden="true"><path fill="currentColor" d="M50 4l9 22 23-8-8 23 22 9-22 9 8 23-23-8-9 22-9-22-23 8 8-23-22-9 22-9-8-23 23 8z"/></svg>
+      <span class="lbl">Скажи по-английски</span>
+      <button class="card" id="card" type="button" aria-label="Перевернуть карточку">
+        <span class="card-in">
+          <span class="face ru"><small id="sayN">Фраза 1 из 5</small><b id="sayRu"></b><span class="hint"><svg><use href="#i-q"/></svg>Нажмите — увидите ответ</span></span>
+          <span class="face en"><small>Так говорят носители</small><b id="sayEn"></b><span class="hint"><svg><use href="#i-check"/></svg>Учим такие фразы на уроках</span></span>
+        </span>
+      </button>
+      <div class="say-nav"><div class="dots" id="sayDots"></div><button type="button" id="sayNext">Следующая фраза</button></div>
+    </div>
+  </div>
+</section>
+
+<div class="ticker" aria-hidden="true"><div id="tick"></div></div>
+
+<!-- Сейчас в StudyOn -->
+<section class="sec" id="now" aria-labelledby="h-now">
+  <div class="wrap">
+    <div class="sh"><span class="stk"><svg><use href="#i-clock"/></svg></span><div class="t"><h2 id="h-now">Сейчас в StudyOn</h2><p>Что идёт прямо сейчас по времени Бишкека. Пн–Сб, 9:00–21:00 — выбирайте удобное время.</p></div></div>
+    <div class="now">
+      <div class="now-top"><div class="clock" id="clk">--:--</div><div class="now-st"><b><i id="dot"></i><span id="stT"></span></b><p id="stP"></p></div><a class="btn btn-wa" data-wa="Здравствуйте! Хочу подобрать время для группы в StudyOn" href="#"><svg><use href="#i-wa"/></svg>Подобрать время</a></div>
+      <div class="tl" id="tl"></div>
+    </div>
+    <p class="note">Расписание групп — примерное, для макета.</p>
+  </div>
+</section>
+
+<!-- Курсы -->
+<section class="sec" id="courses" aria-labelledby="h-c" style="padding-top:0">
+  <div class="wrap">
+    <div class="sh"><span class="stk pink"><svg><use href="#i-cap"/></svg></span><div class="t"><h2 id="h-c">Курсы</h2><p>80% разговора, 20% грамматики. Группы до 10 человек.</p></div></div>
+    <div class="courses">
+      <article class="cc"><span class="ci"><svg><use href="#i-kid"/></svg></span><h3>Для детей 6–12</h3><p>Игры, мультфильмы, песни. Говорят без страха ошибиться.</p><div class="pr">от 4 000<small>сом в месяц</small></div><a class="btn" data-wa="Здравствуйте! Хочу записать ребёнка в StudyOn" href="#"><svg><use href="#i-wa"/></svg>Записать</a></article>
+      <article class="cc"><span class="ci"><svg><use href="#i-chat"/></svg></span><h3>Разговорный</h3><p>Для подростков 13+ и взрослых. Заговорите за 6 недель.</p><div class="pr">от 4 500<small>сом в месяц</small></div><a class="btn" data-wa="Здравствуйте! Хочу на разговорный английский в StudyOn" href="#"><svg><use href="#i-wa"/></svg>Записаться</a></article>
+      <article class="cc"><span class="ci"><svg><use href="#i-trophy"/></svg></span><h3>IELTS</h3><p>Все 4 секции и пробный экзамен — для учёбы за рубежом.</p><div class="pr">от 6 000<small>сом в месяц</small></div><a class="btn" data-wa="Здравствуйте! Хочу на IELTS в StudyOn" href="#"><svg><use href="#i-wa"/></svg>Записаться</a></article>
+      <article class="cc"><span class="ci"><svg><use href="#i-globe"/></svg></span><h3>Talking Club</h3><p>Живой разговор с носителем раз в неделю. Уровень от Elementary.</p><div class="pr">от 500<small>сом за встречу</small></div><a class="btn" data-wa="Здравствуйте! Хочу в Talking Club StudyOn" href="#"><svg><use href="#i-wa"/></svg>Прийти</a></article>
+    </div>
+    <p class="note">Цены примерные, для макета. Первый урок — бесплатный.</p>
+  </div>
+</section>
+
+<!-- Тест -->
+<section class="sec test" id="test" aria-labelledby="h-test">
+  <div class="wrap test-g">
+    <div>
+      <div class="sh"><span class="stk w"><svg><use href="#i-q"/></svg></span><div class="t"><h2 id="h-test">Проверь свой уровень</h2><p>10 вопросов — 3 минуты. Ответ видно сразу.</p></div></div>
+      <div class="prize">
+        <div><svg><use href="#i-trophy"/></svg>Узнаете уровень: от Beginner до Upper</div>
+        <div><svg><use href="#i-users"/></svg>Подскажем группу под ваш уровень</div>
+        <div><svg><use href="#i-wa"/></svg>Отправите результат — запишем на пробный</div>
+      </div>
+    </div>
+    <div class="qbox" id="quiz"></div>
+  </div>
+</section>
+
+<!-- Сезонные наборы -->
+<section class="sec" id="sets" aria-labelledby="h-s">
+  <div class="wrap">
+    <div class="sh"><span class="stk mint"><svg><use href="#i-cal"/></svg></span><div class="t"><h2 id="h-s">Сезонные наборы</h2><p>Новые группы стартуют несколько раз в год. Успейте занять место — в группе до 10 человек.</p></div></div>
+    <div class="seas">
+      <div class="sc hot"><span class="when">Старт 17 ноября</span><h3>Осенний набор</h3><div class="cd" id="cd" aria-live="off"><div><b id="cdD">0</b><small>дней</small></div><div><b id="cdH">0</b><small>часов</small></div><div><b id="cdM">0</b><small>минут</small></div></div><p>Группы Beginner и Elementary для взрослых и детей — во всех трёх филиалах.</p><a class="btn btn-y" data-wa="Здравствуйте! Хочу в осенний набор StudyOn" href="#"><svg><use href="#i-wa"/></svg>Занять место</a></div>
+      <div class="sc"><span class="when">Январь</span><h3>Новый год — новый язык</h3><p>Набор во все уровни и IELTS. Скидка тем, кто записался до 25 декабря.</p><a class="btn" data-wa="Здравствуйте! Хочу записаться в январский набор StudyOn" href="#">Записаться заранее</a></div>
+      <div class="sc"><span class="when">Июнь — август</span><h3>Летний интенсив</h3><p>Для школьников: 6 недель каждый день — английский вместо скучных каникул.</p><a class="btn" data-wa="Здравствуйте! Интересует летний интенсив StudyOn для школьника" href="#">Узнать подробнее</a></div>
+    </div>
+    <p class="note">Даты и скидки — примерные, для макета.</p>
+  </div>
+</section>
+
+<!-- Учителя -->
+<section class="sec" id="team" aria-labelledby="h-t" style="padding-top:0">
+  <div class="wrap">
+    <div class="sh"><span class="stk sky"><svg><use href="#i-person"/></svg></span><div class="t"><h2 id="h-t">Учителя</h2><p>Все учились за рубежом. Наведите или нажмите на карточку — узнаете о каждом больше.</p></div></div>
+    <div class="team">
+      <button class="tf" type="button"><span class="tf-in">
+        <span class="fc"><span class="ph"><svg class="ph-i"><use href="#i-person"/></svg></span><span class="cap"><b>Мисс Бибинур</b><span>Английский и китайский</span></span></span>
+        <span class="fc bk"><q>Поставлю вам красивый британский акцент</q><ul><li>6 лет преподаёт</li><li>Учитель двух языков</li></ul></span>
+      </span></button>
+      <button class="tf" type="button"><span class="tf-in">
+        <span class="fc"><span class="ph"><svg class="ph-i"><use href="#i-person"/></svg></span><span class="cap"><b>Мистер Аман</b><span>Разговорный английский</span></span></span>
+        <span class="fc bk"><q>Учим английский через фильмы и песни</q><ul><li>Неординарные уроки</li><li>Нужно быть активным!</li></ul></span>
+      </span></button>
+      <button class="tf" type="button"><span class="tf-in">
+        <span class="fc"><span class="ph"><svg class="ph-i"><use href="#i-person"/></svg></span><span class="cap"><b>Мисс Виктория</b><span>Общий английский</span></span></span>
+        <span class="fc bk"><q>Училась и преподавала в Южной Корее</q><ul><li>You &amp; I English Academy</li><li>Опыт 3+ года</li></ul></span>
+      </span></button>
+      <button class="tf" type="button"><span class="tf-in">
+        <span class="fc"><span class="ph"><svg class="ph-i"><use href="#i-person"/></svg></span><span class="cap"><b>Мистер Рензе</b><span>Носитель · Talking Club</span></span></span>
+        <span class="fc bk"><q>Из Голландии — и знает казахский</q><ul><li>Ведёт Talking Club</li><li>Прокачает разговорный</li></ul></span>
+      </span></button>
+    </div>
+  </div>
+</section>
+
+<!-- Отзывы -->
+<section class="sec" id="reviews" aria-labelledby="h-r" style="padding-top:0">
+  <div class="wrap">
+    <div class="sh"><span class="stk"><svg><use href="#i-chat"/></svg></span><div class="t"><h2 id="h-r">Нам пишут</h2><p>Примеры отзывов из переписки — заменим на настоящие.</p></div></div>
+    <div class="chats">
+      <div class="ch"><div class="ch-h"><div class="ph"><svg class="ph-i"><use href="#i-person"/></svg></div><div><b>Мама Эмира</b><span>Детская группа · Токмок</span></div></div>
+        <div class="ch-b"><div class="bb">Здравствуйте! Эмир сегодня сам заказал мороженое на английском в отеле 😂<small>18:42</small></div><div class="bb">Раньше он английский терпеть не мог. Спасибо Мисс Бибинур!<small>18:43</small></div><div class="bb me">Как здорово! Передадим ей 💛<small>18:50</small></div></div></div>
+      <div class="ch"><div class="ch-h"><div class="ph"><svg class="ph-i"><use href="#i-person"/></svg></div><div><b>Бектур</b><span>IELTS · Филармония</span></div></div>
+        <div class="ch-b"><div class="bb">Пришли результаты!!! Overall 7.0 🎉<small>10:05</small></div><div class="bb">Writing 6.5 — а был 5.5. Еду в магистратуру 🇩🇪<small>10:06</small></div><div class="bb me">Поздравляем! Это ваш результат 🔥<small>10:12</small></div></div></div>
+      <div class="ch"><div class="ch-h"><div class="ph"><svg class="ph-i"><use href="#i-person"/></svg></div><div><b>Айпери</b><span>Talking Club · Асанбай</span></div></div>
+        <div class="ch-b"><div class="bb">Первый раз говорила с иностранцем 40 минут и не растерялась 😅<small>20:15</small></div><div class="bb">Рензе сказал, что у меня хорошее произношение. Можно в субботу ещё?<small>20:16</small></div><div class="bb me">Конечно, записали вас! 🙌<small>20:20</small></div></div></div>
+    </div>
+    <div class="cta" style="margin-top:40px"><a class="btn btn-gis" data-gis href="#"><svg><use href="#i-pin"/></svg>Отзывы в 2ГИС · 4,9</a></div>
+  </div>
+</section>
+
+<!-- Филиалы -->
+<section class="sec" id="branches" aria-labelledby="h-b" style="padding-top:0">
+  <div class="wrap">
+    <div class="sh"><span class="stk pink"><svg><use href="#i-pin"/></svg></span><div class="t"><h2 id="h-b">Где мы</h2><p>Три филиала — выберите ближайший.</p></div></div>
+    <div class="tabs" role="tablist" aria-label="Филиалы">
+      <button role="tab" type="button" aria-selected="true" data-b="0">Асанбай</button>
+      <button role="tab" type="button" aria-selected="false" data-b="1">Филармония</button>
+      <button role="tab" type="button" aria-selected="false" data-b="2">Токмок</button>
+    </div>
+    <div class="brc" role="tabpanel">
+      <div class="map" aria-hidden="true"><svg class="pin"><use href="#i-pin"/></svg><span class="pl" id="bPl"></span></div>
+      <div class="info">
+        <h3 id="bT"></h3><p id="bA"></p>
+        <div class="ln"><svg><use href="#i-clock"/></svg>Пн–Сб, 9:00–21:00</div>
+        <div class="ln"><svg><use href="#i-phone"/></svg><a href="tel:+996990313800">+996 990 31 38 00</a></div>
+        <div class="row"><a class="btn btn-gis" id="bG" data-gis href="#"><svg><use href="#i-pin"/></svg>Маршрут в 2ГИС</a><a class="btn btn-wa" id="bW" data-wa href="#"><svg><use href="#i-wa"/></svg>Записаться</a></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="end" aria-labelledby="h-end">
+  <div class="wrap end-g">
+    <div style="flex:1;min-width:280px"><h2 id="h-end">Первый урок — бесплатно. Let's talk!</h2><a class="tel-big" href="tel:+996990313800">+996 990 31 38 00</a></div>
+    <a class="btn btn-wa" data-wa href="#"><svg><use href="#i-wa"/></svg>Написать в WhatsApp</a>
+    <a class="btn btn-y" href="https://instagram.com/study_on_kg" target="_blank" rel="noopener"><svg><use href="#i-ig"/></svg>@study_on_kg</a>
+  </div>
+</section>
+</main>
+<footer><div class="wrap ft"><span>StudyOn · курсы английского · Бишкек и Токмок</span><a href="tel:+996990313800">+996 990 31 38 00</a></div></footer>
+
+<script>
+(function(){
+  /* «Скажи по-английски» */
+  var S=[["Я не понял, повторите, пожалуйста","Sorry, could you say that again?"],["Мне, пожалуйста, капучино с собой","Can I get a cappuccino to go?"],["Я только начинаю учить английский","I'm just starting to learn English."],["Как пройти до Филармонии?","How do I get to the Philharmonic?"],["Давай встретимся после пар","Let's meet up after class."]];
+  var si=0, card=document.getElementById("card"), dots=document.getElementById("sayDots"), auto;
+  dots.innerHTML=S.map(function(){return "<i></i>";}).join("");
+  function showS(){
+    card.classList.remove("flip");
+    setTimeout(function(){
+      document.getElementById("sayRu").textContent="«"+S[si][0]+"»";
+      document.getElementById("sayEn").textContent=S[si][1];
+      document.getElementById("sayN").textContent="Фраза "+(si+1)+" из "+S.length;
+      [].forEach.call(dots.children,function(d,i){d.className=i===si?"on":"";});
+    },card.classList.contains("flip")?250:0);
+  }
+  card.onclick=function(){card.classList.toggle("flip");clearInterval(auto);};
+  document.getElementById("sayNext").onclick=function(){si=(si+1)%S.length;showS();clearInterval(auto);};
+  showS();
+  if(!window.SOreduced){var step=0;auto=setInterval(function(){step++; if(step%2){card.classList.add("flip");} else {si=(si+1)%S.length;showS();}},2800);}
+
+  /* бегущая строка */
+  var T=["Hello!","How are you?","Let's talk","I can do it","See you on Saturday","Talking Club","Nice to meet you","Study ON"];
+  var line=T.map(function(t){return "<span>"+t+"</span>";}).join("");
+  document.getElementById("tick").innerHTML=line+line;
+
+  /* Сейчас в StudyOn: шкала дня 9–21 по времени Бишкека (UTC+6) */
+  var R=[
+    {n:"Взрослые",g:[[9,10.5,"Beginner · утро","#FFE000"],[10.5,12,"Pre-Int · утро","#FFE000"],[18,19.5,"Elementary","#FFE000"],[19.5,21,"Intermediate","#FFE000"]]},
+    {n:"Дети 6–12",g:[[14,15.5,"Kids · младшие","#FF8AC4"],[15.5,17,"Kids · старшие","#FF8AC4"]]},
+    {n:"IELTS",g:[[12,13.5,"IELTS · день","#8FD8FF"],[19,20.5,"IELTS · вечер","#8FD8FF"]]},
+    {n:"Talking Club",g:[[17,18,"Club с Рензе","#9BF0B9"]]}
+  ];
+  var tl=document.getElementById("tl");
+  function pos(h){return ((h-9)/12*100)+"%";}
+  tl.innerHTML=R.map(function(r){return '<div class="tl-row"><span>'+r.n+'</span><div class="tl-bar">'+r.g.map(function(g){return '<i style="left:'+pos(g[0])+';width:calc('+((g[1]-g[0])/12*100)+'% - 4px);background:'+g[3]+'" title="'+g[2]+'">'+g[2]+'</i>';}).join("")+'</div></div>';}).join("")+
+    '<div class="tl-scale"><span></span><div><span>9:00</span><span>12:00</span><span>15:00</span><span>18:00</span><span>21:00</span></div></div><div class="tl-area"><span class="tl-now" id="tlNow"></span></div>';
+  function bish(){var d=new Date();return new Date(d.getTime()+d.getTimezoneOffset()*60000+6*3600000);}
+  function tick(){
+    var b=bish(), h=b.getHours()+b.getMinutes()/60, day=b.getDay(), open=day!==0&&h>=9&&h<21;
+    document.getElementById("clk").textContent=String(b.getHours()).padStart(2,"0")+":"+String(b.getMinutes()).padStart(2,"0");
+    var nowEl=document.getElementById("tlNow"), dot=document.getElementById("dot");
+    nowEl.style.display=open?"":"none"; if(open) nowEl.style.left=pos(h);
+    dot.className=open?"":"off";
+    var cur=[]; R.forEach(function(r){r.g.forEach(function(g){if(open&&h>=g[0]&&h<g[1])cur.push(g[2]);});});
+    document.getElementById("stT").textContent=open?"Открыто":"Сейчас закрыто";
+    document.getElementById("stP").textContent=open?(cur.length?"Идёт урок: "+cur.join(", ")+". Заходите на пробный!":"Сейчас перерыв между группами — самое время позвонить."):(day===0?"Воскресенье — выходной. Напишите в WhatsApp, ответим утром в понедельник.":"Откроемся в 9:00. Напишите в WhatsApp — ответим утром.");
+  }
+  tick(); setInterval(tick,30000);
+
+  /* отсчёт до осеннего набора — 17 ноября 2026, 9:00 по Бишкеку */
+  var start=Date.UTC(2026,10,17,3,0);
+  function cd(){
+    var ms=Math.max(0,start-Date.now()), m=Math.floor(ms/60000);
+    document.getElementById("cdD").textContent=Math.floor(m/1440);
+    document.getElementById("cdH").textContent=Math.floor(m%1440/60);
+    document.getElementById("cdM").textContent=m%60;
+  }
+  cd(); setInterval(cd,30000);
+
+  /* учителя: на телефоне переворот по нажатию */
+  document.querySelectorAll(".tf").forEach(function(t){t.onclick=function(){t.classList.toggle("flip");};});
+
+  /* филиалы */
+  var B=[
+    {t:"Асанбай",a:"Бишкек, ул. Арстанбека Дуйшеева, 6/4, ЖК «Park Avenue», район «Английский квартал»",g:"asanbay",p:"Дуйшеева, 6/4"},
+    {t:"Филармония",a:"Бишкек, проспект Манаса, 64/1 — ориентир: Филармония",g:"filarm",p:"пр. Манаса, 64/1"},
+    {t:"Токмок",a:"Токмок, ул. Шамсинская, 44",g:"tokmok",p:"Шамсинская, 44"}
+  ];
+  var tabs=[].slice.call(document.querySelectorAll(".tabs button"));
+  function br(i){
+    var b=B[i];
+    tabs.forEach(function(t){t.setAttribute("aria-selected",+t.dataset.b===i);});
+    document.getElementById("bT").textContent=b.t;
+    document.getElementById("bA").textContent=b.a;
+    document.getElementById("bPl").textContent=b.p;
+    document.getElementById("bG").dataset.gis=b.g;
+    document.getElementById("bW").dataset.wa="Здравствуйте! Хочу на пробный урок в филиал StudyOn «"+b.t+"»";
+    SOwa();
+  }
+  tabs.forEach(function(t){t.onclick=function(){br(+t.dataset.b);};});
+  br(0);
+
+  SOtest(document.getElementById("quiz"));
+})();
+</script>
+</body>
+</html>
